@@ -6,8 +6,8 @@ class City():
     self.lat = lat
     self.lon = lon
 
-  # def __str__(self):
-  #   return '{self.name} -- Lat: {self.lat}, Lon: {self.lon}'.format(self=self)
+  def __str__(self):
+    return '{self.name} -- Lat: {self.lat}, Lon: {self.lon}'.format(self=self)
 
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
@@ -77,6 +77,15 @@ for c in cities:
 # Salt Lake City: (40.7774,-111.9301)
 
 # TODO Get latitude and longitude values from the user
+point_1 = input("Enter lat1,lon1: ").split(',')
+point_2 = input("Enter lat2,lon2: ").split(',')
+
+# convert values to floats instead of strings
+for i, el in enumerate(point_1):
+  point_1[i] = float(el)
+
+for i, el in enumerate(point_2):
+  point_2[i] = float(el)
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
@@ -85,4 +94,27 @@ def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
 
+  # initialize corner points
+  upper_right = [lat1, lon1]
+  lower_left = [lat2, lon2]
+  
+  # if point_1's lat and lon are less than point_2, then poin_1 should be the lower left point
+  if (lat1 < lat2) and (lon1 < lon2):
+    lower_left = [lat1, lon1]
+    upper_right = [lat2, lon2]
+
+  
+  # lower_left[0] <= city lat <= upper_right[0]
+  # lower_left[0] <= city lon <= upper_right[0]
+
+  for city in cities:
+    if (lower_left[0] <= city.lat <= upper_right[0]) and (lower_left[1] <= city.lon <= upper_right[1]):
+      within.append(city)
+  
   return within
+
+# new_cities = cityreader_stretch(point_1[0], point_1[1], point_2[0], point_2[1], cities)
+
+# print('\n\n-----------\n\n')
+# for c in new_cities:
+#   print(c)
